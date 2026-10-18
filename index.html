@@ -1,0 +1,2896 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>GABY</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --oro: #a66a12;
+      --oro-claro: #d8b16a;
+      --crema: #faf7f2;
+      --texto: #171717;
+      --gris: #777;
+      --borde: #eee8e0;
+      --verde: #167344;
+      --verde-fondo: #dff3e8;
+      --apartado: #9a6516;
+      --apartado-fondo: #fff0cf;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--crema);
+      color: var(--texto);
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+
+    /* =====================================
+       CATÁLOGO
+    ====================================== */
+
+    #catalogo {
+      min-height: 100vh;
+    }
+
+
+    /* =====================================
+       ENCABEZADO
+    ====================================== */
+
+    .cabecera {
+      position: relative;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fffdf9 0%,
+          #faf3e8 100%
+        );
+
+      text-align: center;
+
+      padding:
+        22px 18px 19px;
+
+      border-bottom:
+        1px solid #eee5d9;
+    }
+
+
+
+    /* =====================================
+       DIAMANTE
+    ====================================== */
+
+    .diamante {
+      position: relative;
+
+      width: 48px;
+      height: 36px;
+
+      margin:
+        0 auto 7px;
+
+      color: var(--oro);
+
+      z-index: 2;
+    }
+
+    .diamante svg {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+    }
+
+
+    .marca {
+      position: relative;
+
+      z-index: 2;
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size: 25px;
+
+      letter-spacing: 4px;
+
+      font-weight: 600;
+    }
+
+
+    .subtitulo {
+      position: relative;
+
+      z-index: 2;
+
+      margin-top: 7px;
+
+      color: #7d746b;
+
+      font-size: 10px;
+
+      letter-spacing: 2px;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =====================================
+       CONTENIDO
+    ====================================== */
+
+    .contenido {
+      width: 100%;
+
+      max-width: 900px;
+
+      margin: auto;
+
+      padding:
+        17px 12px 45px;
+    }
+
+
+    /* =====================================
+       BUSCADOR
+    ====================================== */
+
+    .buscador {
+      position: relative;
+
+      margin-bottom: 18px;
+    }
+
+
+    .buscador-icono {
+      position: absolute;
+
+      left: 16px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      font-size: 18px;
+
+      pointer-events: none;
+    }
+
+
+    #buscar {
+      width: 100%;
+
+      height: 48px;
+
+      border:
+        1px solid #e7e1da;
+
+      border-radius: 25px;
+
+      background: white;
+
+      padding:
+        0 18px 0 47px;
+
+      outline: none;
+
+      font-size: 15px;
+
+      box-shadow:
+        0 3px 12px
+        rgba(0,0,0,.05);
+    }
+
+
+    #buscar:focus {
+      border-color:
+        var(--oro-claro);
+    }
+
+
+    /* =====================================
+       CATEGORÍAS
+    ====================================== */
+
+    .categorias {
+      display: flex;
+
+      gap: 9px;
+
+      overflow-x: auto;
+
+      padding:
+        1px 1px 15px;
+
+      scrollbar-width: none;
+    }
+
+
+    .categorias::-webkit-scrollbar {
+      display: none;
+    }
+
+
+    .categoria {
+      flex-shrink: 0;
+
+      border:
+        1px solid #e7e1da;
+
+      background: white;
+
+      color: #555;
+
+      border-radius: 22px;
+
+      padding:
+        10px 16px;
+
+      font-size: 13px;
+
+      cursor: pointer;
+
+      transition:
+        .15s ease;
+    }
+
+
+    .categoria.activa {
+      background:
+        var(--oro);
+
+      border-color:
+        var(--oro);
+
+      color: white;
+    }
+
+
+    /* =====================================
+       ENCABEZADO PRODUCTOS
+    ====================================== */
+
+    .encabezado-productos {
+      display: flex;
+
+      align-items: center;
+
+      justify-content:
+        space-between;
+
+      margin:
+        3px 2px 12px;
+    }
+
+
+    .titulo-productos {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size: 20px;
+
+      font-weight: bold;
+    }
+
+
+    #cantidadProductos {
+      font-size: 12px;
+
+      color: #999;
+    }
+
+
+    /* =====================================
+       PRODUCTOS
+    ====================================== */
+
+    .productos {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fill,
+          minmax(170px, 1fr)
+        );
+
+      gap: 13px;
+    }
+
+
+    .producto {
+      background: white;
+
+      border-radius: 15px;
+
+      overflow: hidden;
+
+      cursor: pointer;
+
+      border:
+        1px solid #eee8e1;
+
+      box-shadow:
+        0 3px 12px
+        rgba(0,0,0,.055);
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+    }
+
+
+    .producto:hover {
+      box-shadow:
+        0 5px 18px
+        rgba(0,0,0,.09);
+    }
+
+
+    .producto:active {
+      transform:
+        scale(.985);
+    }
+
+
+    .foto-contenedor {
+      position: relative;
+
+      width: 100%;
+
+      aspect-ratio: 1 / 1;
+
+      background: #eeeae5;
+
+      overflow: hidden;
+    }
+
+
+    .foto-producto {
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+    }
+
+
+    .sin-foto {
+      width: 100%;
+
+      height: 100%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 42px;
+
+      color: var(--oro);
+    }
+
+
+    .info {
+      padding:
+        11px 11px 12px;
+    }
+
+
+    .nombre {
+      font-size: 14px;
+
+      font-weight: 600;
+
+      line-height: 1.3;
+
+      min-height: 36px;
+
+      margin-bottom: 3px;
+    }
+
+
+    .material {
+      color: #9b7b48;
+
+      font-size: 10px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .6px;
+
+      margin-bottom: 5px;
+    }
+
+
+    .precio {
+      color: #8b570d;
+
+      font-size: 19px;
+
+      font-weight: 700;
+
+      margin-bottom: 8px;
+    }
+
+
+    .pie-producto {
+      display: flex;
+
+      justify-content:
+        space-between;
+
+      align-items: center;
+
+      gap: 5px;
+    }
+
+
+    .codigo-producto {
+      font-size: 11px;
+
+      color: #8d8d8d;
+    }
+
+
+    .estado {
+      background:
+        var(--verde-fondo);
+
+      color:
+        var(--verde);
+
+      border-radius: 20px;
+
+      padding:
+        5px 8px;
+
+      font-size: 9px;
+
+      font-weight: bold;
+    }
+
+
+    .estado.apartado,
+    .detalle-estado.apartado {
+      background: var(--apartado-fondo);
+      color: var(--apartado);
+    }
+
+
+    .mensaje {
+      grid-column:
+        1 / -1;
+
+      padding:
+        60px 20px;
+
+      text-align: center;
+
+      color: #888;
+    }
+
+
+    /* =====================================
+       DETALLE
+    ====================================== */
+
+    #detalle {
+      display: none;
+
+      min-height: 100vh;
+
+      background:
+        var(--crema);
+    }
+
+
+    .barra-detalle {
+      height: 58px;
+
+      background: white;
+
+      border-bottom:
+        1px solid var(--borde);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 50;
+    }
+
+
+    .volver {
+      position: absolute;
+
+      left: 10px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      width: 40px;
+
+      height: 40px;
+
+      border: 0;
+
+      background: transparent;
+
+      font-size: 29px;
+
+      cursor: pointer;
+    }
+
+
+    .marca-detalle {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      letter-spacing: 3px;
+
+      font-size: 17px;
+
+      font-weight: 600;
+    }
+
+
+    .detalle-contenedor {
+      max-width: 620px;
+
+      margin: auto;
+
+      padding:
+        14px 12px 40px;
+    }
+
+
+    .detalle-tarjeta {
+      background: white;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 3px 15px
+        rgba(0,0,0,.06);
+    }
+
+
+    /* =====================================
+       GALERÍA
+    ====================================== */
+
+    .galeria-principal {
+      position: relative;
+
+      background: #eeeae5;
+
+      overflow: hidden;
+
+      touch-action: pan-y;
+    }
+
+
+    #imagenPrincipal {
+      display: block;
+
+      width: 100%;
+
+      aspect-ratio: 1 / 1;
+
+      object-fit: cover;
+    }
+
+
+    .flecha {
+      position: absolute;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      width: 42px;
+
+      height: 42px;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.9);
+
+      font-size: 27px;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 2px 8px
+        rgba(0,0,0,.14);
+    }
+
+
+    .flecha-izquierda {
+      left: 11px;
+    }
+
+
+    .flecha-derecha {
+      right: 11px;
+    }
+
+
+    .contador-fotos {
+      position: absolute;
+
+      right: 12px;
+
+      bottom: 12px;
+
+      background:
+        rgba(25,25,25,.72);
+
+      color: white;
+
+      border-radius: 18px;
+
+      padding:
+        6px 10px;
+
+      font-size: 12px;
+    }
+
+
+    .miniaturas {
+      display: flex;
+
+      gap: 9px;
+
+      padding: 10px;
+
+      overflow-x: auto;
+
+      background: white;
+    }
+
+
+    .miniatura {
+      width: 70px;
+
+      height: 70px;
+
+      flex-shrink: 0;
+
+      border-radius: 9px;
+
+      object-fit: cover;
+
+      border:
+        2px solid transparent;
+
+      opacity: .68;
+
+      cursor: pointer;
+    }
+
+
+    .miniatura.activa {
+      border-color:
+        var(--oro);
+
+      opacity: 1;
+    }
+
+
+    /* =====================================
+       DATOS DEL PRODUCTO
+    ====================================== */
+
+    .detalle-info {
+      padding: 20px;
+    }
+
+
+    .detalle-superior {
+      display: flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        flex-start;
+
+      gap: 12px;
+    }
+
+
+    .detalle-nombre {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size: 25px;
+
+      font-weight: bold;
+
+      line-height: 1.2;
+    }
+
+
+    .detalle-estado {
+      flex-shrink: 0;
+
+      background:
+        var(--verde-fondo);
+
+      color:
+        var(--verde);
+
+      border-radius: 20px;
+
+      padding:
+        7px 10px;
+
+      font-size: 10px;
+
+      font-weight: bold;
+    }
+
+
+    .detalle-precio {
+      color: #8b570d;
+
+      font-size: 28px;
+
+      font-weight: 700;
+
+      margin:
+        7px 0 17px;
+    }
+
+
+    .datos {
+      border-top:
+        1px solid #eee;
+    }
+
+
+    .dato {
+      display: grid;
+
+      grid-template-columns:
+        105px 1fr;
+
+      gap: 10px;
+
+      padding:
+        13px 0;
+
+      border-bottom:
+        1px solid #eee;
+
+      font-size: 14px;
+    }
+
+
+    .dato-etiqueta {
+      color: #888;
+    }
+
+
+    .dato-valor {
+      color: #333;
+
+      font-weight: 500;
+    }
+
+
+    .descripcion {
+      line-height: 1.55;
+
+      white-space: pre-line;
+    }
+
+
+    /* =====================================
+       ICONO DESCRIPCIÓN
+    ====================================== */
+
+    .descripcion-con-icono {
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 9px;
+    }
+
+
+    .icono-joya {
+      flex:
+        0 0 32px;
+
+      width: 32px;
+
+      height: 32px;
+
+      color: #b9822e;
+
+      background: #faf4e9;
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+    }
+
+
+    .icono-joya svg {
+      width: 21px;
+
+      height: 21px;
+    }
+
+
+
+    /* =====================================
+       WHATSAPP
+    ====================================== */
+
+    .whatsapp-contenedor {
+      padding-top: 18px;
+    }
+
+    .boton-whatsapp {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 14px;
+      background: #25D366;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.10);
+    }
+
+    .boton-whatsapp:active {
+      transform: scale(.985);
+    }
+
+    .icono-whatsapp {
+      width: 22px;
+      height: 22px;
+      display: block;
+      fill: currentColor;
+    }
+
+
+    .boton-compartir {
+      width: 100%;
+      min-height: 50px;
+      margin-top: 10px;
+      border: 1px solid #dfd5c8;
+      border-radius: 14px;
+      background: #fffaf3;
+      color: #7c551c;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+    }
+
+    .boton-compartir:active {
+      transform: scale(.985);
+    }
+
+    .icono-compartir {
+      width: 20px;
+      height: 20px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+
+    /* =====================================
+       CELULAR
+    ====================================== */
+
+    @media (max-width: 480px) {
+
+      .cabecera {
+        padding-top: 19px;
+      }
+
+
+      .rama-dorada {
+        top: 2px;
+
+        left: -17px;
+
+        width: 145px;
+
+        height: 104px;
+      }
+
+
+      .marca {
+        font-size: 23px;
+      }
+
+
+      .contenido {
+        padding-left: 10px;
+
+        padding-right: 10px;
+      }
+
+
+      .productos {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+
+        gap: 10px;
+      }
+
+
+      .nombre {
+        font-size: 13px;
+      }
+
+
+      .precio {
+        font-size: 18px;
+      }
+
+
+      .detalle-contenedor {
+        padding:
+          0 0 30px;
+      }
+
+
+      .detalle-tarjeta {
+        border-radius: 0;
+
+        box-shadow: none;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     CATÁLOGO
+====================================== -->
+
+<div id="catalogo">
+
+
+  <header class="cabecera">
+
+
+    <!-- =================================
+         RAMA DORADA CORREGIDA
+    ================================== -->
+
+    
+
+    <!-- =================================
+         DIAMANTE
+    ================================== -->
+
+    <div
+      class="diamante"
+      aria-hidden="true">
+
+      <svg viewBox="0 0 80 58">
+
+        <path
+          d="
+            M17 18
+            L28 5
+            H52
+            L63 18
+            L40 52
+            Z
+          "
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"/>
+
+
+        <path
+          d="
+            M17 18 H63
+            M28 5 L34 18
+            M52 5 L46 18
+            M34 18 L40 52
+            M46 18 L40 52
+          "
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"/>
+
+      </svg>
+
+    </div>
+
+
+    <div class="marca">
+      GABY
+    </div>
+
+
+    <div class="subtitulo">
+      Joyería de oro laminado y accesorios
+    </div>
+
+
+  </header>
+
+
+  <!-- ===================================
+       CONTENIDO
+  ==================================== -->
+
+  <main class="contenido">
+
+
+    <!-- BUSCADOR -->
+
+    <div class="buscador">
+
+      <span class="buscador-icono">
+        ⌕
+      </span>
+
+
+      <input
+        id="buscar"
+        type="search"
+        placeholder="Buscar joyas..."
+        autocomplete="off">
+
+    </div>
+
+
+    <!-- CATEGORÍAS -->
+
+    <div
+      id="categorias"
+      class="categorias">
+    </div>
+
+
+    <!-- TÍTULO -->
+
+    <div class="encabezado-productos">
+
+      <div class="titulo-productos">
+        Nuestras joyas
+      </div>
+
+      <div id="cantidadProductos">
+      </div>
+
+    </div>
+
+
+    <!-- PRODUCTOS -->
+
+    <div
+      id="productos"
+      class="productos">
+
+      <div class="mensaje">
+        Cargando joyas...
+      </div>
+
+    </div>
+
+
+  </main>
+
+</div>
+
+
+<!-- =====================================
+     DETALLE
+====================================== -->
+
+<div id="detalle">
+
+
+  <div class="barra-detalle">
+
+
+    <button
+      class="volver"
+      onclick="cerrarDetalle()">
+
+      ‹
+
+    </button>
+
+
+    <div class="marca-detalle">
+      GABY
+    </div>
+
+
+  </div>
+
+
+  <div class="detalle-contenedor">
+
+
+    <div class="detalle-tarjeta">
+
+
+      <!-- GALERÍA -->
+
+      <div
+        id="galeriaPrincipal"
+        class="galeria-principal">
+
+
+        <img
+          id="imagenPrincipal"
+          src=""
+          alt="Joya">
+
+
+        <button
+          id="flechaIzquierda"
+          class="flecha flecha-izquierda"
+          onclick="fotoAnterior(event)">
+
+          ‹
+
+        </button>
+
+
+        <button
+          id="flechaDerecha"
+          class="flecha flecha-derecha"
+          onclick="fotoSiguiente(event)">
+
+          ›
+
+        </button>
+
+
+        <div
+          id="contadorFotos"
+          class="contador-fotos">
+        </div>
+
+
+      </div>
+
+
+      <!-- MINIATURAS -->
+
+      <div
+        id="miniaturas"
+        class="miniaturas">
+      </div>
+
+
+      <!-- INFORMACIÓN -->
+
+      <div class="detalle-info">
+
+
+        <div class="detalle-superior">
+
+
+          <div
+            id="detalleNombre"
+            class="detalle-nombre">
+          </div>
+
+
+          <div
+            id="detalleEstado"
+            class="detalle-estado">
+            DISPONIBLE
+          </div>
+
+
+        </div>
+
+
+        <div
+          id="detallePrecio"
+          class="detalle-precio">
+        </div>
+
+
+        <div class="datos">
+
+
+          <!-- CATEGORÍA -->
+
+          <div class="dato">
+
+            <div class="dato-etiqueta">
+              Categoría
+            </div>
+
+            <div
+              id="detalleCategoria"
+              class="dato-valor">
+            </div>
+
+          </div>
+
+
+          <!-- MATERIAL -->
+
+          <div class="dato">
+
+            <div class="dato-etiqueta">
+              Material
+            </div>
+
+            <div class="dato-valor">
+              Oro laminado
+            </div>
+
+          </div>
+
+
+          <!-- CÓDIGO -->
+
+          <div class="dato">
+
+            <div class="dato-etiqueta">
+              Código
+            </div>
+
+            <div
+              id="detalleCodigo"
+              class="dato-valor">
+            </div>
+
+          </div>
+
+
+          <!-- DESCRIPCIÓN -->
+
+          <div class="dato">
+
+            <div class="dato-etiqueta">
+              Descripción
+            </div>
+
+
+            <div class="descripcion-con-icono">
+
+
+              <div
+                class="icono-joya"
+                aria-hidden="true">
+
+
+                <svg viewBox="0 0 48 48">
+
+                  <path
+                    d="
+                      M14 18
+                      L19 11
+                      H29
+                      L34 18
+                      L24 35
+                      Z
+                    "
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+
+
+                  <path
+                    d="
+                      M14 18 H34
+                      M19 11 L22 18
+                      M29 11 L26 18
+                      M22 18 L24 35
+                      M26 18 L24 35
+                    "
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.4"/>
+
+                </svg>
+
+
+              </div>
+
+
+              <div
+                id="detalleDescripcion"
+                class="dato-valor descripcion">
+              </div>
+
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- WHATSAPP -->
+
+        <div class="whatsapp-contenedor">
+
+          <button
+            id="botonWhatsApp"
+            class="boton-whatsapp"
+            type="button"
+            onclick="consultarWhatsApp()">
+
+            <svg
+              class="icono-whatsapp"
+              viewBox="0 0 24 24"
+              aria-hidden="true">
+
+              <path d="M12.04 2C6.52 2 2.03 6.48 2.03 12c0 1.76.46 3.48 1.33 5L2 22l5.12-1.34A9.96 9.96 0 0 0 12.04 22C17.56 22 22 17.52 22 12S17.56 2 12.04 2zm5.83 14.3c-.25.7-1.45 1.34-2 1.43-.51.08-1.16.12-1.87-.12-.43-.14-.98-.32-1.69-.62-2.97-1.28-4.9-4.27-5.05-4.47-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37h.57c.18 0 .43-.07.67.51.25.6.84 2.05.91 2.2.08.15.13.32.03.52-.1.2-.15.32-.3.49-.15.17-.32.37-.45.5-.15.15-.31.31-.13.61.17.3.76 1.25 1.64 2.02 1.13 1 2.08 1.31 2.38 1.46.3.15.47.13.65-.08.17-.2.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.02.96.3.15.5.22.57.35.08.12.08.72-.17 1.42z"/>
+
+            </svg>
+
+            Consultar por WhatsApp
+
+          </button>
+
+
+          <button
+            class="boton-compartir"
+            type="button"
+            onclick="compartirJoya()">
+
+            <svg
+              class="icono-compartir"
+              viewBox="0 0 24 24"
+              aria-hidden="true">
+
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <path d="M8.6 10.6l6.8-4.2"></path>
+              <path d="M8.6 13.4l6.8 4.2"></path>
+
+            </svg>
+
+            Compartir joya
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+  const productoInicial =
+    new URLSearchParams(window.location.search)
+      .get("producto") || "";
+
+
+  /* =====================================
+     VARIABLES
+  ====================================== */
+
+  let productos = [];
+
+  let filtroCategoria =
+    "TODOS";
+
+  let fotosDetalle = [];
+
+  let fotoActual = 0;
+
+  let inicioSwipeX = 0;
+
+  let productoDetalle = null;
+
+
+  /* =====================================
+     CARGAR PRODUCTOS
+  ====================================== */
+
+  const API_PUBLICA =
+    "https://script.google.com/macros/s/AKfycbywcQDlOOz4UNpuu0htP3uUA0dcl6O34taNblcnMCa2AJgo7j-WPsVS8k6bHkn8IcH9ew/exec";
+
+  function recibirProductosGaby(datos) {
+    productos = Array.isArray(datos) ? datos : [];
+    construirCategorias();
+    renderizarProductos();
+    abrirProductoDesdeEnlace();
+  }
+
+  function errorCargaProductos() {
+    document.getElementById("productos").innerHTML =
+      '<div class="mensaje">No fue posible cargar las joyas.</div>';
+  }
+
+  function cargarProductosPublicos() {
+    const script = document.createElement("script");
+    script.src = API_PUBLICA +
+      "?api=productos&callback=recibirProductosGaby&_=" + Date.now();
+    script.onerror = errorCargaProductos;
+    document.head.appendChild(script);
+  }
+
+  cargarProductosPublicos();
+
+
+  /* =====================================
+     BUSCADOR
+  ====================================== */
+
+  document.getElementById(
+    "buscar"
+  ).addEventListener(
+    "input",
+    renderizarProductos
+  );
+
+
+  /* =====================================
+     CATEGORÍAS
+  ====================================== */
+
+  function construirCategorias() {
+
+    const contenedor =
+      document.getElementById(
+        "categorias"
+      );
+
+
+    const categorias = [
+      ...new Set(
+
+        productos
+
+          .filter(
+            function(p) {
+
+              return estadoVisible(
+                p
+              );
+
+            }
+          )
+
+          .map(
+            function(p) {
+
+              return String(
+                p.categoria || ""
+              )
+              .trim()
+              .toUpperCase();
+
+            }
+          )
+
+          .filter(Boolean)
+
+      )
+    ];
+
+
+    contenedor.innerHTML = "";
+
+
+    crearBotonCategoria(
+      contenedor,
+      "TODOS",
+      "Todos"
+    );
+
+
+    categorias.forEach(
+      function(categoria) {
+
+        crearBotonCategoria(
+          contenedor,
+          categoria,
+          formatearCategoria(
+            categoria
+          )
+        );
+
+      }
+    );
+
+  }
+
+
+  function crearBotonCategoria(
+    contenedor,
+    valor,
+    texto
+  ) {
+
+    const boton =
+      document.createElement(
+        "button"
+      );
+
+
+    boton.className =
+      "categoria" +
+      (
+        filtroCategoria === valor
+          ? " activa"
+          : ""
+      );
+
+
+    boton.textContent =
+      texto;
+
+
+    boton.addEventListener(
+      "click",
+      function() {
+
+        filtroCategoria =
+          valor;
+
+
+        document
+          .querySelectorAll(
+            ".categoria"
+          )
+          .forEach(
+            function(b) {
+
+              b.classList.remove(
+                "activa"
+              );
+
+            }
+          );
+
+
+        boton.classList.add(
+          "activa"
+        );
+
+
+        renderizarProductos();
+
+      }
+    );
+
+
+    contenedor.appendChild(
+      boton
+    );
+
+  }
+
+
+  /* =====================================
+     MOSTRAR PRODUCTOS
+  ====================================== */
+
+  function renderizarProductos() {
+
+    const contenedor =
+      document.getElementById(
+        "productos"
+      );
+
+
+    const texto =
+      normalizar(
+        document.getElementById(
+          "buscar"
+        ).value
+      );
+
+
+    const filtrados =
+      productos.filter(
+        function(producto) {
+
+
+          if (
+            !estadoVisible(
+              producto
+            )
+          ) {
+
+            return false;
+
+          }
+
+
+          const categoria =
+            String(
+              producto.categoria || ""
+            )
+            .trim()
+            .toUpperCase();
+
+
+          if (
+            filtroCategoria !==
+              "TODOS" &&
+            categoria !==
+              filtroCategoria
+          ) {
+
+            return false;
+
+          }
+
+
+          if (texto) {
+
+            const contenido =
+              normalizar(
+
+                [
+                  producto.nombre,
+                  producto.categoria,
+                  producto.descripcion,
+                  producto.id,
+                  "oro laminado"
+                ].join(" ")
+
+              );
+
+
+            if (
+              !contenido.includes(
+                texto
+              )
+            ) {
+
+              return false;
+
+            }
+
+          }
+
+
+          return true;
+
+        }
+      );
+
+
+    document.getElementById(
+      "cantidadProductos"
+    ).textContent =
+
+      filtrados.length +
+
+      (
+        filtrados.length === 1
+          ? " pieza"
+          : " piezas"
+      );
+
+
+    contenedor.innerHTML = "";
+
+
+    if (
+      filtrados.length === 0
+    ) {
+
+      contenedor.innerHTML =
+        '<div class="mensaje">' +
+        'No encontramos joyas con esa búsqueda.' +
+        '</div>';
+
+      return;
+
+    }
+
+
+    filtrados.forEach(
+      function(producto) {
+
+
+        const tarjeta =
+          document.createElement(
+            "article"
+          );
+
+
+        tarjeta.className =
+          "producto";
+
+
+        /* FOTO */
+
+        const foto =
+          document.createElement(
+            "div"
+          );
+
+
+        foto.className =
+          "foto-contenedor";
+
+
+        if (
+          producto.foto1
+        ) {
+
+          const img =
+            document.createElement(
+              "img"
+            );
+
+
+          img.className =
+            "foto-producto";
+
+
+          img.src =
+            crearUrlFoto(
+              producto.foto1,
+              700
+            );
+
+
+          img.alt =
+            producto.nombre ||
+            "Joya";
+
+
+          foto.appendChild(
+            img
+          );
+
+        } else {
+
+          const vacia =
+            document.createElement(
+              "div"
+            );
+
+
+          vacia.className =
+            "sin-foto";
+
+
+          vacia.textContent =
+            "◇";
+
+
+          foto.appendChild(
+            vacia
+          );
+
+        }
+
+
+        /* INFORMACIÓN */
+
+        const info =
+          document.createElement(
+            "div"
+          );
+
+
+        info.className =
+          "info";
+
+
+        const nombre =
+          document.createElement(
+            "div"
+          );
+
+
+        nombre.className =
+          "nombre";
+
+
+        nombre.textContent =
+          producto.nombre || "";
+
+
+        const material =
+          document.createElement(
+            "div"
+          );
+
+
+        material.className =
+          "material";
+
+
+        material.textContent =
+          "Oro laminado";
+
+
+        const precio =
+          document.createElement(
+            "div"
+          );
+
+
+        precio.className =
+          "precio";
+
+
+        precio.textContent =
+          formatoPrecio(
+            producto.precio
+          );
+
+
+        const pie =
+          document.createElement(
+            "div"
+          );
+
+
+        pie.className =
+          "pie-producto";
+
+
+        const codigo =
+          document.createElement(
+            "div"
+          );
+
+
+        codigo.className =
+          "codigo-producto";
+
+
+        codigo.textContent =
+          producto.id || "";
+
+
+        const estado =
+          document.createElement(
+            "div"
+          );
+
+
+        const estadoTexto =
+          obtenerEstado(
+            producto
+          );
+
+
+        estado.className =
+          "estado" +
+          (
+            estadoTexto === "APARTADO"
+              ? " apartado"
+              : ""
+          );
+
+
+        estado.textContent =
+          estadoTexto;
+
+
+        pie.appendChild(
+          codigo
+        );
+
+
+        pie.appendChild(
+          estado
+        );
+
+
+        info.appendChild(
+          nombre
+        );
+
+
+        info.appendChild(
+          material
+        );
+
+
+        info.appendChild(
+          precio
+        );
+
+
+        info.appendChild(
+          pie
+        );
+
+
+        tarjeta.appendChild(
+          foto
+        );
+
+
+        tarjeta.appendChild(
+          info
+        );
+
+
+        tarjeta.addEventListener(
+          "click",
+          function() {
+
+            abrirDetalle(
+              producto.id
+            );
+
+          }
+        );
+
+
+        contenedor.appendChild(
+          tarjeta
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =====================================
+     DETALLE
+  ====================================== */
+
+  function abrirDetalle(id) {
+
+    const producto =
+      productos.find(
+        function(p) {
+
+          return String(
+            p.id
+          ) === String(id);
+
+        }
+      );
+
+
+    if (!producto) {
+      return;
+    }
+
+
+    productoDetalle = producto;
+
+
+    fotosDetalle = [
+
+      producto.foto1,
+      producto.foto2,
+      producto.foto3,
+      producto.foto4
+
+    ].filter(
+      function(foto) {
+
+        return (
+          foto &&
+          String(foto).trim()
+        );
+
+      }
+    );
+
+
+    fotoActual = 0;
+
+
+    document.getElementById(
+      "detalleNombre"
+    ).textContent =
+      producto.nombre || "";
+
+
+    document.getElementById(
+      "detallePrecio"
+    ).textContent =
+      formatoPrecio(
+        producto.precio
+      );
+
+
+    document.getElementById(
+      "detalleCategoria"
+    ).textContent =
+      formatearCategoria(
+        producto.categoria
+      );
+
+
+    document.getElementById(
+      "detalleCodigo"
+    ).textContent =
+      producto.id || "";
+
+
+    document.getElementById(
+      "detalleDescripcion"
+    ).textContent =
+      producto.descripcion ||
+      "Sin descripción.";
+
+
+    const estadoDetalle =
+      obtenerEstado(
+        producto
+      );
+
+
+    const etiquetaEstado =
+      document.getElementById(
+        "detalleEstado"
+      );
+
+
+    etiquetaEstado.textContent =
+      estadoDetalle;
+
+
+    etiquetaEstado.className =
+      "detalle-estado" +
+      (
+        estadoDetalle === "APARTADO"
+          ? " apartado"
+          : ""
+      );
+
+
+    construirGaleria();
+
+
+    document.getElementById(
+      "catalogo"
+    ).style.display =
+      "none";
+
+
+    document.getElementById(
+      "detalle"
+    ).style.display =
+      "block";
+
+
+    window.scrollTo(
+      0,
+      0
+    );
+
+  }
+
+
+  function cerrarDetalle() {
+
+    document.getElementById(
+      "detalle"
+    ).style.display =
+      "none";
+
+
+    document.getElementById(
+      "catalogo"
+    ).style.display =
+      "block";
+
+
+    window.scrollTo(
+      0,
+      0
+    );
+
+  }
+
+
+  /* =====================================
+     GALERÍA
+  ====================================== */
+
+  function construirGaleria() {
+
+    const principal =
+      document.getElementById(
+        "imagenPrincipal"
+      );
+
+
+    const miniaturas =
+      document.getElementById(
+        "miniaturas"
+      );
+
+
+    const contador =
+      document.getElementById(
+        "contadorFotos"
+      );
+
+
+    const izquierda =
+      document.getElementById(
+        "flechaIzquierda"
+      );
+
+
+    const derecha =
+      document.getElementById(
+        "flechaDerecha"
+      );
+
+
+    miniaturas.innerHTML =
+      "";
+
+
+    if (
+      fotosDetalle.length === 0
+    ) {
+
+      principal.src =
+        crearPlaceholder();
+
+
+      contador.style.display =
+        "none";
+
+
+      miniaturas.style.display =
+        "none";
+
+
+      izquierda.style.display =
+        "none";
+
+
+      derecha.style.display =
+        "none";
+
+
+      return;
+
+    }
+
+
+    fotosDetalle.forEach(
+      function(id, indice) {
+
+
+        const mini =
+          document.createElement(
+            "img"
+          );
+
+
+        mini.className =
+          "miniatura";
+
+
+        mini.src =
+          crearUrlFoto(
+            id,
+            300
+          );
+
+
+        mini.addEventListener(
+          "click",
+          function() {
+
+            cambiarFoto(
+              indice
+            );
+
+          }
+        );
+
+
+        miniaturas.appendChild(
+          mini
+        );
+
+      }
+    );
+
+
+    const varias =
+      fotosDetalle.length > 1;
+
+
+    izquierda.style.display =
+      varias
+        ? "block"
+        : "none";
+
+
+    derecha.style.display =
+      varias
+        ? "block"
+        : "none";
+
+
+    contador.style.display =
+      varias
+        ? "block"
+        : "none";
+
+
+    miniaturas.style.display =
+      varias
+        ? "flex"
+        : "none";
+
+
+    cambiarFoto(0);
+
+  }
+
+
+  function cambiarFoto(
+    indice
+  ) {
+
+    if (
+      !fotosDetalle.length
+    ) {
+      return;
+    }
+
+
+    if (
+      indice < 0
+    ) {
+
+      indice =
+        fotosDetalle.length - 1;
+
+    }
+
+
+    if (
+      indice >=
+      fotosDetalle.length
+    ) {
+
+      indice = 0;
+
+    }
+
+
+    fotoActual =
+      indice;
+
+
+    document.getElementById(
+      "imagenPrincipal"
+    ).src =
+      crearUrlFoto(
+        fotosDetalle[
+          fotoActual
+        ],
+        1400
+      );
+
+
+    document.getElementById(
+      "contadorFotos"
+    ).textContent =
+
+      (fotoActual + 1) +
+
+      " / " +
+
+      fotosDetalle.length;
+
+
+    document
+      .querySelectorAll(
+        ".miniatura"
+      )
+      .forEach(
+        function(mini, i) {
+
+          mini.classList.toggle(
+            "activa",
+            i === fotoActual
+          );
+
+        }
+      );
+
+  }
+
+
+  function fotoAnterior(
+    evento
+  ) {
+
+    if (evento) {
+      evento.stopPropagation();
+    }
+
+
+    cambiarFoto(
+      fotoActual - 1
+    );
+
+  }
+
+
+  function fotoSiguiente(
+    evento
+  ) {
+
+    if (evento) {
+      evento.stopPropagation();
+    }
+
+
+    cambiarFoto(
+      fotoActual + 1
+    );
+
+  }
+
+
+  /* =====================================
+     SWIPE
+  ====================================== */
+
+  const galeria =
+    document.getElementById(
+      "galeriaPrincipal"
+    );
+
+
+  galeria.addEventListener(
+    "touchstart",
+    function(evento) {
+
+      inicioSwipeX =
+        evento
+          .touches[0]
+          .clientX;
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  galeria.addEventListener(
+    "touchend",
+    function(evento) {
+
+
+      if (
+        fotosDetalle.length <= 1
+      ) {
+        return;
+      }
+
+
+      const finalX =
+        evento
+          .changedTouches[0]
+          .clientX;
+
+
+      const diferencia =
+        finalX -
+        inicioSwipeX;
+
+
+      if (
+        Math.abs(
+          diferencia
+        ) < 45
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        diferencia < 0
+      ) {
+
+        cambiarFoto(
+          fotoActual + 1
+        );
+
+      } else {
+
+        cambiarFoto(
+          fotoActual - 1
+        );
+
+      }
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  /* =====================================
+     ENLACE DIRECTO / COMPARTIR
+  ====================================== */
+
+  function abrirProductoDesdeEnlace() {
+
+    const id =
+      productoInicial;
+
+
+    if (!id) {
+      return;
+    }
+
+
+    const producto =
+      productos.find(
+        function(p) {
+
+          return String(
+            p.id || ""
+          )
+          .trim()
+          .toUpperCase() ===
+          String(id)
+          .trim()
+          .toUpperCase();
+
+        }
+      );
+
+
+    if (
+      producto &&
+      estadoVisible(producto)
+    ) {
+
+      abrirDetalle(
+        producto.id
+      );
+
+    }
+
+  }
+
+
+  function obtenerEnlaceProducto(
+    producto
+  ) {
+
+    const url =
+      new URL(
+        "https://laxel3262-lgtm.github.io/gaby-joyeria/"
+      );
+
+
+    url.searchParams.set(
+      "producto",
+      producto.id
+    );
+
+
+    return url.toString();
+
+  }
+
+
+  async function compartirJoya() {
+
+    if (!productoDetalle) {
+      return;
+    }
+
+
+    const enlace =
+      obtenerEnlaceProducto(
+        productoDetalle
+      );
+
+
+    const texto =
+      "Mira esta joya de GABY: " +
+      (productoDetalle.nombre || "Joya") +
+      " - " +
+      formatoPrecio(
+        productoDetalle.precio
+      );
+
+
+    if (navigator.share) {
+
+      try {
+
+        await navigator.share({
+          title:
+            productoDetalle.nombre +
+            " | GABY",
+
+          text: texto,
+
+          url: enlace
+        });
+
+        return;
+
+      } catch (error) {
+
+        if (
+          error &&
+          error.name === "AbortError"
+        ) {
+          return;
+        }
+
+      }
+
+    }
+
+
+    try {
+
+      await navigator.clipboard.writeText(
+        texto + "\n" + enlace
+      );
+
+      alert(
+        "Enlace de la joya copiado."
+      );
+
+    } catch (error) {
+
+      prompt(
+        "Copia este enlace:",
+        enlace
+      );
+
+    }
+
+  }
+
+
+  /* =====================================
+     WHATSAPP
+  ====================================== */
+
+  function consultarWhatsApp() {
+
+    if (!productoDetalle) {
+      return;
+    }
+
+
+    const telefono =
+      "528711495594";
+
+
+    const estado =
+      obtenerEstado(
+        productoDetalle
+      );
+
+
+    const mensaje =
+      estado === "APARTADO"
+
+        ? (
+            "Hola, vi la pieza " +
+            (productoDetalle.nombre || "esta pieza") +
+            ", código " +
+            (productoDetalle.id || "") +
+            ", que aparece como apartada. " +
+            "Quisiera más información."
+          )
+
+        : (
+            "Hola, me interesa " +
+            (productoDetalle.nombre || "esta pieza") +
+            ".\n" +
+            "Código: " +
+            (productoDetalle.id || "") +
+            "\n" +
+            "Precio: " +
+            formatoPrecio(
+              productoDetalle.precio
+            ) +
+            "\n" +
+            "Quisiera más información sobre esta pieza."
+          );
+
+
+    const url =
+      "https://wa.me/" +
+      telefono +
+      "?text=" +
+      encodeURIComponent(mensaje);
+
+
+    window.open(
+      url,
+      "_blank"
+    );
+
+  }
+
+
+  /* =====================================
+     UTILIDADES
+  ====================================== */
+
+  function obtenerEstado(
+    producto
+  ) {
+
+    return String(
+      producto.estado || ""
+    )
+    .trim()
+    .toUpperCase();
+
+  }
+
+
+  function estadoDisponible(
+    producto
+  ) {
+
+    return obtenerEstado(
+      producto
+    ) === "DISPONIBLE";
+
+  }
+
+
+  function estadoVisible(
+    producto
+  ) {
+
+    const estado =
+      obtenerEstado(
+        producto
+      );
+
+
+    return (
+      estado === "DISPONIBLE" ||
+      estado === "APARTADO"
+    );
+
+  }
+
+
+  function crearUrlFoto(
+    id,
+    tamaño
+  ) {
+
+    return (
+      "https://drive.google.com/thumbnail?id=" +
+      encodeURIComponent(id) +
+      "&sz=w" +
+      tamaño
+    );
+
+  }
+
+
+  function formatoPrecio(
+    valor
+  ) {
+
+    const numero =
+      Number(
+
+        String(
+          valor || ""
+        )
+        .replace(
+          /[$,\s]/g,
+          ""
+        )
+
+      );
+
+
+    if (
+      Number.isFinite(
+        numero
+      )
+    ) {
+
+      return numero.toLocaleString(
+        "es-MX",
+        {
+          style: "currency",
+          currency: "MXN",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2
+        }
+      );
+
+    }
+
+
+    return "$" + valor;
+
+  }
+
+
+  function formatearCategoria(
+    categoria
+  ) {
+
+    const texto =
+      String(
+        categoria || ""
+      )
+      .trim()
+      .toLowerCase();
+
+
+    if (!texto) {
+      return "";
+    }
+
+
+    return (
+      texto.charAt(0)
+        .toUpperCase() +
+      texto.slice(1)
+    );
+
+  }
+
+
+  function normalizar(
+    texto
+  ) {
+
+    return String(
+      texto || ""
+    )
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .trim();
+
+  }
+
+
+  function crearPlaceholder() {
+
+    return (
+      "data:image/svg+xml;charset=UTF-8," +
+
+      encodeURIComponent(
+
+        '<svg ' +
+        'xmlns="http://www.w3.org/2000/svg" ' +
+        'width="900" ' +
+        'height="900">' +
+
+        '<rect ' +
+        'width="100%" ' +
+        'height="100%" ' +
+        'fill="#eeeae5"/>' +
+
+        '<text ' +
+        'x="50%" ' +
+        'y="50%" ' +
+        'dominant-baseline="middle" ' +
+        'text-anchor="middle" ' +
+        'font-size="100" ' +
+        'fill="#a66a12">' +
+
+        '◇' +
+
+        '</text>' +
+
+        '</svg>'
+
+      )
+    );
+
+  }
+
+</script>
+
+
+</body>
+</html>
