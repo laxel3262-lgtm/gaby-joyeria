@@ -1077,6 +1077,126 @@
   
 /* VISOR FOTO */
 .visor-foto{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.94);align-items:center;justify-content:center;overflow:hidden;touch-action:none}.visor-foto.activo{display:flex}.visor-foto img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center;user-select:none;-webkit-user-drag:none;touch-action:none}.visor-cerrar{position:absolute;top:14px;right:14px;z-index:10001;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#222;font-size:27px;cursor:pointer}#imagenPrincipal,.miniatura{cursor:zoom-in}
+
+
+    /* =====================================
+       VISTA E-COMMERCE GABY · SOLO VISUAL
+       No cambia datos, filtros ni funciones
+    ====================================== */
+    body {
+      background: #fbf7f1;
+    }
+
+    .cabecera {
+      padding: 18px 18px 20px;
+      background:
+        radial-gradient(circle at 14% 18%, rgba(196,151,72,.12), transparent 24%),
+        radial-gradient(circle at 88% 72%, rgba(215,178,118,.14), transparent 28%),
+        linear-gradient(145deg,#fffdf9 0%,#f8eee1 100%);
+      border-bottom: 1px solid #eadfce;
+    }
+
+    .diamante { width: 52px; height: 39px; margin-bottom: 5px; }
+    .marca { font-size: 31px; letter-spacing: 6px; color:#4c3b28; }
+    .subtitulo { margin-top: 5px; font-size: 10px; letter-spacing: 1.5px; color:#7d6c5a; }
+
+    .cabecera::after {
+      content:"DETALLES QUE TE HACEN BRILLAR";
+      display:block;
+      width:max-content;
+      max-width:90%;
+      margin:14px auto 0;
+      padding:7px 13px;
+      border-top:1px solid rgba(166,116,39,.30);
+      color:#9a6a27;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:11px;
+      letter-spacing:1.6px;
+    }
+
+    .contenido {
+      max-width: 980px;
+      padding: 14px 12px 48px;
+    }
+
+    .buscador { margin-bottom: 14px; }
+    #buscar {
+      height: 49px;
+      border-radius: 14px;
+      border: 1px solid #e2d7c8;
+      box-shadow: 0 4px 14px rgba(83,59,28,.055);
+      background:rgba(255,255,255,.96);
+    }
+    #buscar:focus { box-shadow:0 0 0 3px rgba(181,132,56,.10); }
+
+    .categorias {
+      gap:8px;
+      padding: 1px 1px 17px;
+    }
+    .categoria {
+      border-radius: 11px;
+      padding: 9px 14px;
+      border-color:#e6dacb;
+      background:#fffdfa;
+      color:#685846;
+      box-shadow:0 2px 8px rgba(74,52,26,.035);
+    }
+    .categoria.activa {
+      background:#9a6a27;
+      border-color:#9a6a27;
+      box-shadow:0 4px 12px rgba(154,106,39,.18);
+    }
+
+    .encabezado-productos {
+      margin: 4px 2px 13px;
+      padding-top:2px;
+    }
+    .titulo-productos {
+      font-size:21px;
+      color:#45372a;
+      letter-spacing:.1px;
+    }
+    #cantidadProductos {
+      padding:5px 8px;
+      border-radius:12px;
+      background:#f0e7db;
+      color:#826d55;
+    }
+
+    .productos { gap:12px; }
+    .producto {
+      border-radius:13px;
+      border:1px solid #e9dfd3;
+      box-shadow:0 4px 14px rgba(75,52,27,.065);
+      background:#fffefa;
+    }
+    .producto:hover { box-shadow:0 7px 20px rgba(75,52,27,.10); }
+    .foto-contenedor { background:#f2ece4; }
+    .info { padding:10px 11px 12px; }
+    .nombre { color:#3e342a; font-size:14px; min-height:35px; }
+    .material { color:#a47a3c; font-size:9px; letter-spacing:.8px; }
+    .precio { color:#9a6516; font-family:Georgia,"Times New Roman",serif; font-size:21px; margin-bottom:7px; }
+    .codigo-producto { color:#a2988e; font-size:10px; }
+    .estado { padding:5px 8px; font-size:9px; }
+    .etiqueta-oferta {
+      top:8px; left:8px; border-radius:6px; padding:5px 8px;
+      background:#d62f50; letter-spacing:.4px;
+    }
+
+    @media (max-width:520px) {
+      .cabecera { padding:16px 14px 17px; }
+      .diamante { width:46px; height:34px; }
+      .marca { font-size:28px; letter-spacing:5px; }
+      .cabecera::after { margin-top:11px; font-size:9px; padding:6px 9px; }
+      .contenido { padding:12px 10px 42px; }
+      .productos { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+      .producto { border-radius:12px; }
+      .info { padding:9px 9px 10px; }
+      .nombre { font-size:13px; min-height:34px; }
+      .precio { font-size:19px; }
+      .pie-producto { align-items:flex-end; }
+    }
+
 </style>
 
 </head>
