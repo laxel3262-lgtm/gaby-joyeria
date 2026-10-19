@@ -1059,7 +1059,10 @@
       margin: 14px 0 4px;
     }
 
-  </style>
+  
+/* VISOR FOTO */
+.visor-foto{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.94);align-items:center;justify-content:center;overflow:hidden;touch-action:none}.visor-foto.activo{display:flex}.visor-foto img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center;user-select:none;-webkit-user-drag:none;touch-action:none}.visor-cerrar{position:absolute;top:14px;right:14px;z-index:10001;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#222;font-size:27px;cursor:pointer}#detalleImagenPrincipal{cursor:zoom-in}
+</style>
 
 </head>
 
@@ -3220,5 +3223,11 @@
 </script>
 
 
+
+<div id="visorFoto" class="visor-foto" aria-hidden="true"><button id="visorCerrar" class="visor-cerrar" type="button" aria-label="Cerrar">×</button><img id="visorImagen" src="" alt="Foto ampliada de la joya"></div>
+
+<script>
+(function(){const v=document.getElementById('visorFoto'),im=document.getElementById('visorImagen'),c=document.getElementById('visorCerrar');let s=1,x=0,y=0,d0=0,s0=1,ix=0,iy=0,ax=0,ay=0;function tr(){im.style.transform='translate('+x+'px,'+y+'px) scale('+s+')'}function reset(){s=1;x=0;y=0;tr()}function open(src){if(!src)return;im.src=src;reset();v.classList.add('activo');document.body.style.overflow='hidden'}function close(){v.classList.remove('activo');im.src='';document.body.style.overflow='';reset()}function dist(ts){return Math.hypot(ts[0].clientX-ts[1].clientX,ts[0].clientY-ts[1].clientY)}document.addEventListener('click',e=>{const f=e.target.closest('#detalleImagenPrincipal');if(f)open(f.currentSrc||f.src)});c.addEventListener('click',e=>{e.stopPropagation();close()});v.addEventListener('click',e=>{if(e.target===v)close()});v.addEventListener('touchstart',e=>{if(e.touches.length===2){d0=dist(e.touches);s0=s}else if(e.touches.length===1&&s>1){ix=e.touches[0].clientX;iy=e.touches[0].clientY;ax=x;ay=y}},{passive:false});v.addEventListener('touchmove',e=>{if(e.touches.length===2){e.preventDefault();s=Math.min(4,Math.max(1,s0*dist(e.touches)/d0));if(s===1){x=0;y=0}tr()}else if(e.touches.length===1&&s>1){e.preventDefault();x=ax+e.touches[0].clientX-ix;y=ay+e.touches[0].clientY-iy;tr()}},{passive:false});v.addEventListener('touchend',e=>{if(e.touches.length<2)d0=0});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&v.classList.contains('activo'))close()})})();
+</script>
 </body>
 </html>
