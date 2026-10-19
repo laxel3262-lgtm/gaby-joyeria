@@ -1513,6 +1513,12 @@
 
   cargarProductosPublicos();
 
+  // Actualiza los datos del catálogo cada 30 segundos
+  // sin recargar la página completa.
+  setInterval(function() {
+    cargarProductosPublicos();
+  }, 30000);
+
 
   /* =====================================
      BUSCADOR
