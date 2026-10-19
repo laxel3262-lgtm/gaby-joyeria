@@ -1500,6 +1500,16 @@
     new URLSearchParams(window.location.search)
       .get("producto") || "";
 
+  // Identifica la vista base del catálogo para que Chrome pueda
+  // regresar correctamente desde el detalle de una tarjeta.
+  if (!productoInicial) {
+    history.replaceState(
+      { vista: "catalogo" },
+      "",
+      window.location.pathname
+    );
+  }
+
 
   /* =====================================
      VARIABLES
@@ -2122,6 +2132,15 @@
               producto.id
             );
 
+            history.pushState(
+              {
+                vista: "detalle",
+                producto: String(producto.id)
+              },
+              "",
+              "?producto=" + encodeURIComponent(producto.id)
+            );
+
           }
         );
 
@@ -2403,19 +2422,19 @@
   }
 
 
-  function cerrarDetalle() {
+  function mostrarCatalogo() {
+
+    productoDetalle = null;
 
     document.getElementById(
       "detalle"
     ).style.display =
       "none";
 
-
     document.getElementById(
       "catalogo"
     ).style.display =
       "block";
-
 
     window.scrollTo(
       0,
@@ -2423,6 +2442,46 @@
     );
 
   }
+
+
+  function cerrarDetalle() {
+
+    // Si el detalle creó una entrada en el historial,
+    // usar el retroceso real del navegador.
+    if (
+      history.state &&
+      history.state.vista === "detalle"
+    ) {
+      history.back();
+      return;
+    }
+
+    mostrarCatalogo();
+
+  }
+
+
+  // Botón/gesto Atrás de Chrome:
+  // detalle -> catálogo, sin cerrar la página.
+  window.addEventListener(
+    "popstate",
+    function(evento) {
+
+      if (
+        evento.state &&
+        evento.state.vista === "detalle" &&
+        evento.state.producto
+      ) {
+        abrirDetalle(
+          evento.state.producto
+        );
+        return;
+      }
+
+      mostrarCatalogo();
+
+    }
+  );
 
 
   /* =====================================
