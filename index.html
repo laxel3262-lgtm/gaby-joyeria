@@ -622,6 +622,7 @@
 
     .galeria-principal {
       position: relative;
+      position: relative;
 
       background: #eeeae5;
 
@@ -796,6 +797,23 @@
       font-size: 10px;
 
       font-weight: bold;
+    }
+
+
+    .detalle-oferta-cintilla {
+      display: none;
+      position: absolute;
+      top: 14px;
+      left: 0;
+      z-index: 8;
+      background: #b3261e;
+      color: #fff;
+      padding: 7px 15px 7px 12px;
+      border-radius: 0 16px 16px 0;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .8px;
+      box-shadow: 0 2px 7px rgba(0,0,0,.16);
     }
 
 
@@ -1036,6 +1054,11 @@
 
     }
 
+      #botonWhatsApp {
+      width: 100%;
+      margin: 14px 0 4px;
+    }
+
   </style>
 
 </head>
@@ -1218,6 +1241,12 @@
         id="galeriaPrincipal"
         class="galeria-principal">
 
+        <div
+          id="detalleOferta"
+          class="detalle-oferta-cintilla">
+          OFERTA
+        </div>
+
 
         <img
           id="imagenPrincipal"
@@ -1290,6 +1319,25 @@
           id="detallePrecio"
           class="detalle-precio">
         </div>
+
+        <button
+            id="botonWhatsApp"
+            class="boton-whatsapp"
+            type="button"
+            onclick="consultarWhatsApp()">
+
+            <svg
+              class="icono-whatsapp"
+              viewBox="0 0 24 24"
+              aria-hidden="true">
+
+              <path d="M12.04 2C6.52 2 2.03 6.48 2.03 12c0 1.76.46 3.48 1.33 5L2 22l5.12-1.34A9.96 9.96 0 0 0 12.04 22C17.56 22 22 17.52 22 12S17.56 2 12.04 2zm5.83 14.3c-.25.7-1.45 1.34-2 1.43-.51.08-1.16.12-1.87-.12-.43-.14-.98-.32-1.69-.62-2.97-1.28-4.9-4.27-5.05-4.47-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37h.57c.18 0 .43-.07.67.51.25.6.84 2.05.91 2.2.08.15.13.32.03.52-.1.2-.15.32-.3.49-.15.17-.32.37-.45.5-.15.15-.31.31-.13.61.17.3.76 1.25 1.64 2.02 1.13 1 2.08 1.31 2.38 1.46.3.15.47.13.65-.08.17-.2.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.02.96.3.15.5.22.57.35.08.12.08.72-.17 1.42z"/>
+
+            </svg>
+
+            Consultar por WhatsApp
+
+          </button>
 
 
         <div class="datos">
@@ -1410,25 +1458,6 @@
         <!-- WHATSAPP -->
 
         <div class="whatsapp-contenedor">
-
-          <button
-            id="botonWhatsApp"
-            class="boton-whatsapp"
-            type="button"
-            onclick="consultarWhatsApp()">
-
-            <svg
-              class="icono-whatsapp"
-              viewBox="0 0 24 24"
-              aria-hidden="true">
-
-              <path d="M12.04 2C6.52 2 2.03 6.48 2.03 12c0 1.76.46 3.48 1.33 5L2 22l5.12-1.34A9.96 9.96 0 0 0 12.04 22C17.56 22 22 17.52 22 12S17.56 2 12.04 2zm5.83 14.3c-.25.7-1.45 1.34-2 1.43-.51.08-1.16.12-1.87-.12-.43-.14-.98-.32-1.69-.62-2.97-1.28-4.9-4.27-5.05-4.47-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37h.57c.18 0 .43-.07.67.51.25.6.84 2.05.91 2.2.08.15.13.32.03.52-.1.2-.15.32-.3.49-.15.17-.32.37-.45.5-.15.15-.31.31-.13.61.17.3.76 1.25 1.64 2.02 1.13 1 2.08 1.31 2.38 1.46.3.15.47.13.65-.08.17-.2.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.02.96.3.15.5.22.57.35.08.12.08.72-.17 1.42z"/>
-
-            </svg>
-
-            Consultar por WhatsApp
-
-          </button>
 
 
           <button
@@ -2120,6 +2149,19 @@
       "detalleNombre"
     ).textContent =
       producto.nombre || "";
+
+
+    const detalleOferta =
+      document.getElementById(
+        "detalleOferta"
+      );
+
+    detalleOferta.style.display =
+      String(producto.oferta || "")
+        .trim()
+        .toUpperCase() === "SI"
+          ? "block"
+          : "none";
 
 
     document.getElementById(
