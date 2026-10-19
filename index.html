@@ -1291,7 +1291,7 @@
 
           <!-- MATERIAL -->
 
-          <div class="dato">
+          <div class="dato" id="filaMaterial">
 
             <div class="dato-etiqueta">
               Material
@@ -1714,7 +1714,7 @@
                   producto.categoria,
                   producto.descripcion,
                   producto.id,
-                  "oro laminado"
+                  String(producto.categoria || "").trim().toUpperCase() === "OTROS" ? "" : "oro laminado"
                 ].join(" ")
 
               );
@@ -1968,9 +1968,15 @@
         );
 
 
-        info.appendChild(
-          material
-        );
+        if (
+          String(producto.categoria || "")
+            .trim()
+            .toUpperCase() !== "OTROS"
+        ) {
+          info.appendChild(
+            material
+          );
+        }
 
 
         info.appendChild(
@@ -2094,8 +2100,23 @@
     document.getElementById(
       "detalleDescripcion"
     ).textContent =
-      producto.descripcion ||
-      "Sin descripción.";
+      "Financiado a 2 quincenas o compra de $1,000 o más se financia a más tiempo.";
+
+
+    const filaMaterial =
+      document.getElementById(
+        "filaMaterial"
+      );
+
+    const categoriaDetalle =
+      String(producto.categoria || "")
+        .trim()
+        .toUpperCase();
+
+    filaMaterial.style.display =
+      categoriaDetalle === "OTROS"
+        ? "none"
+        : "grid";
 
 
     const estadoDetalle =
