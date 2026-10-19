@@ -369,6 +369,22 @@
     }
 
 
+    .etiqueta-oferta {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 3;
+      background: #b3261e;
+      color: white;
+      border-radius: 18px;
+      padding: 6px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .7px;
+      box-shadow: 0 2px 7px rgba(0,0,0,.16);
+    }
+
+
     .foto-producto {
       width: 100%;
 
@@ -1848,6 +1864,21 @@
         }
 
 
+        if (
+          String(producto.oferta || "")
+            .trim()
+            .toUpperCase() === "SI"
+        ) {
+          const etiquetaOferta =
+            document.createElement("div");
+          etiquetaOferta.className =
+            "etiqueta-oferta";
+          etiquetaOferta.textContent =
+            "OFERTA";
+          foto.appendChild(etiquetaOferta);
+        }
+
+
         /* INFORMACIÓN */
 
         const info =
@@ -1971,12 +2002,14 @@
         if (
           String(producto.categoria || "")
             .trim()
-            .toUpperCase() !== "OTROS"
+            .toUpperCase() === "OTROS"
         ) {
-          info.appendChild(
-            material
-          );
+          material.style.visibility = "hidden";
         }
+
+        info.appendChild(
+          material
+        );
 
 
         info.appendChild(
