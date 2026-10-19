@@ -1526,11 +1526,37 @@
   const API_PUBLICA =
     "https://script.google.com/macros/s/AKfycbywcQDlOOz4UNpuu0htP3uUA0dcl6O34taNblcnMCa2AJgo7j-WPsVS8k6bHkn8IcH9ew/exec";
 
+  let enlaceInicialProcesado = false;
+
   function recibirProductosGaby(datos) {
     productos = Array.isArray(datos) ? datos : [];
+
+    const idDetalleAbierto =
+      productoDetalle && productoDetalle.id
+        ? String(productoDetalle.id)
+        : "";
+
     construirCategorias();
     renderizarProductos();
-    abrirProductoDesdeEnlace();
+
+    // Si el cliente está viendo el detalle de una pieza,
+    // actualiza sus datos sin cerrar la ficha ni mover la pantalla.
+    if (idDetalleAbierto) {
+      const productoActualizado =
+        productos.find(function(p) {
+          return String(p.id) === idDetalleAbierto;
+        });
+
+      if (productoActualizado) {
+        actualizarDetalleEnVivo(productoActualizado);
+      }
+    }
+
+    // El enlace directo solo se procesa una vez al abrir la página.
+    if (!enlaceInicialProcesado) {
+      enlaceInicialProcesado = true;
+      abrirProductoDesdeEnlace();
+    }
   }
 
   function errorCargaProductos() {
@@ -1542,7 +1568,20 @@
     const script = document.createElement("script");
     script.src = API_PUBLICA +
       "?api=productos&callback=recibirProductosGaby&_=" + Date.now();
-    script.onerror = errorCargaProductos;
+
+    script.onload = function() {
+      script.remove();
+    };
+
+    script.onerror = function() {
+      script.remove();
+
+      // Si ya había productos cargados, conservarlos ante un fallo temporal.
+      if (productos.length === 0) {
+        errorCargaProductos();
+      }
+    };
+
     document.head.appendChild(script);
   }
 
@@ -2100,6 +2139,112 @@
   /* =====================================
      DETALLE
   ====================================== */
+
+  function actualizarDetalleEnVivo(producto) {
+
+    const scrollActual = window.scrollY;
+
+    productoDetalle = producto;
+
+    document.getElementById(
+      "detalleNombre"
+    ).textContent =
+      producto.nombre || "";
+
+    const detalleOferta =
+      document.getElementById(
+        "detalleOferta"
+      );
+
+    detalleOferta.style.display =
+      String(producto.oferta || "")
+        .trim()
+        .toUpperCase() === "SI"
+          ? "block"
+          : "none";
+
+    document.getElementById(
+      "detallePrecio"
+    ).textContent =
+      formatoPrecio(
+        producto.precio
+      );
+
+    document.getElementById(
+      "detalleCategoria"
+    ).textContent =
+      formatearCategoria(
+        producto.categoria
+      );
+
+    document.getElementById(
+      "detalleCodigo"
+    ).textContent =
+      producto.id || "";
+
+    const filaMaterial =
+      document.getElementById(
+        "filaMaterial"
+      );
+
+    const categoriaDetalle =
+      String(producto.categoria || "")
+        .trim()
+        .toUpperCase();
+
+    filaMaterial.style.display =
+      categoriaDetalle === "OTROS"
+        ? "none"
+        : "grid";
+
+    const estadoDetalle =
+      obtenerEstado(
+        producto
+      );
+
+    const etiquetaEstado =
+      document.getElementById(
+        "detalleEstado"
+      );
+
+    etiquetaEstado.textContent =
+      estadoDetalle;
+
+    etiquetaEstado.className =
+      "detalle-estado" +
+      (
+        estadoDetalle === "APARTADO"
+          ? " apartado"
+          : estadoDetalle === "VENDIDO"
+            ? " vendido"
+            : ""
+      );
+
+    // Mantener las fotos sincronizadas sin regresar al inicio del detalle.
+    const nuevasFotos = [
+      producto.foto1,
+      producto.foto2,
+      producto.foto3,
+      producto.foto4
+    ].filter(function(foto) {
+      return foto && String(foto).trim();
+    });
+
+    const fotosCambiaron =
+      JSON.stringify(nuevasFotos) !==
+      JSON.stringify(fotosDetalle);
+
+    if (fotosCambiaron) {
+      fotosDetalle = nuevasFotos;
+      if (fotoActual >= fotosDetalle.length) {
+        fotoActual = 0;
+      }
+      construirGaleria();
+    }
+
+    window.scrollTo(0, scrollActual);
+  }
+
 
   function abrirDetalle(id) {
 
