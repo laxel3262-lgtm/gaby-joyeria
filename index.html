@@ -1179,6 +1179,8 @@
     .nombre { color:#3e342a; font-size:14px; min-height:35px; }
     .material { color:#a47a3c; font-size:9px; letter-spacing:.8px; }
     .precio { color:#9a6516; font-family:Georgia,"Times New Roman",serif; font-size:21px; margin-bottom:7px; }
+    .precio-anterior { display:block; color:#9a9289; font-family:Arial,Helvetica,sans-serif; font-size:12px; font-weight:500; text-decoration:line-through; margin-bottom:1px; }
+    .detalle-precio-anterior { display:block; color:#999; font-family:Arial,Helvetica,sans-serif; font-size:15px; font-weight:500; text-decoration:line-through; margin-bottom:2px; }
     .codigo-producto { color:#a2988e; font-size:10px; }
     .estado { padding:5px 8px; font-size:9px; }
     .etiqueta-oferta {
@@ -2229,10 +2231,31 @@
           "precio";
 
 
-        precio.textContent =
-          formatoPrecio(
-            producto.precio
-          );
+        const esOferta =
+          String(producto.oferta || "")
+            .trim()
+            .toUpperCase() === "SI";
+
+        if (esOferta) {
+          const precioAnterior =
+            document.createElement("span");
+          precioAnterior.className =
+            "precio-anterior";
+          precioAnterior.textContent =
+            formatoPrecio(
+              Math.round(numeroPrecio(producto.precio) * 1.30)
+            );
+          precio.appendChild(precioAnterior);
+
+          const precioActual =
+            document.createElement("span");
+          precioActual.textContent =
+            formatoPrecio(producto.precio);
+          precio.appendChild(precioActual);
+        } else {
+          precio.textContent =
+            formatoPrecio(producto.precio);
+        }
 
 
         const pie =
@@ -2424,12 +2447,7 @@
           ? "block"
           : "none";
 
-    document.getElementById(
-      "detallePrecio"
-    ).textContent =
-      formatoPrecio(
-        producto.precio
-      );
+    mostrarPrecioDetalle(producto);
 
     document.getElementById(
       "detalleCategoria"
@@ -2570,12 +2588,7 @@
           : "none";
 
 
-    document.getElementById(
-      "detallePrecio"
-    ).textContent =
-      formatoPrecio(
-        producto.precio
-      );
+    mostrarPrecioDetalle(producto);
 
 
     document.getElementById(
@@ -3334,6 +3347,40 @@
       tamaño
     );
 
+  }
+
+
+  function numeroPrecio(valor) {
+    const numero = Number(
+      String(valor || "").replace(/[$,\s]/g, "")
+    );
+    return Number.isFinite(numero) ? numero : 0;
+  }
+
+  function mostrarPrecioDetalle(producto) {
+    const contenedor =
+      document.getElementById("detallePrecio");
+    const esOferta =
+      String(producto.oferta || "")
+        .trim()
+        .toUpperCase() === "SI";
+
+    contenedor.innerHTML = "";
+
+    if (esOferta) {
+      const anterior = document.createElement("span");
+      anterior.className = "detalle-precio-anterior";
+      anterior.textContent = formatoPrecio(
+        Math.round(numeroPrecio(producto.precio) * 1.30)
+      );
+      contenedor.appendChild(anterior);
+
+      const actual = document.createElement("span");
+      actual.textContent = formatoPrecio(producto.precio);
+      contenedor.appendChild(actual);
+    } else {
+      contenedor.textContent = formatoPrecio(producto.precio);
+    }
   }
 
 
