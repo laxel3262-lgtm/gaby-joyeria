@@ -1228,6 +1228,12 @@
       .pie-producto { align-items:flex-end; }
     }
 
+
+    /* PRUEBA MASONRY / TARJETAS DESFASADAS */
+    .productos { display:block; column-count:2; column-gap:9px; }
+    .producto { display:inline-block; width:100%; margin:0 0 9px; vertical-align:top; break-inside:avoid; -webkit-column-break-inside:avoid; page-break-inside:avoid; }
+    .mensaje { display:block; width:100%; column-span:all; }
+    @media (min-width:700px) { .productos { column-count:3; column-gap:12px; } .producto { margin-bottom:12px; } }
 </style>
 
 </head>
