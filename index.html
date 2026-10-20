@@ -1706,6 +1706,7 @@
   let enlaceInicialProcesado = false;
 
   function recibirProductosGaby(datos) {
+    if (temporizadorCarga) clearTimeout(temporizadorCarga);
     productos = Array.isArray(datos) ? datos : [];
 
     const idDetalleAbierto =
@@ -1741,21 +1742,63 @@
       '<div class="mensaje">No fue posible cargar las joyas.</div>';
   }
 
+  let temporizadorCarga = null;
+
+  function mostrarCargaLenta() {
+    if (productos.length > 0) return;
+
+    document.getElementById("productos").innerHTML =
+      '<div class="mensaje">' +
+      'Está tardando más de lo normal en cargar las joyas.<br><br>' +
+      '<button type="button" onclick="reintentarCargaProductos()" style="border:1px solid #d8c5a8;background:#fffaf3;color:#8b651f;border-radius:12px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;">Reintentar</button>' +
+      '</div>';
+  }
+
+  function reintentarCargaProductos() {
+    if (!navigator.onLine) {
+      document.getElementById("productos").innerHTML =
+        '<div class="mensaje">No hay conexión a Internet.<br>Verifica tu conexión y vuelve a intentarlo.<br><br>' +
+        '<button type="button" onclick="reintentarCargaProductos()" style="border:1px solid #d8c5a8;background:#fffaf3;color:#8b651f;border-radius:12px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;">Reintentar</button></div>';
+      return;
+    }
+
+    document.getElementById("productos").innerHTML =
+      '<div class="mensaje">Cargando joyas...</div>';
+    cargarProductosPublicos();
+  }
+
   function cargarProductosPublicos() {
     const script = document.createElement("script");
+    let terminado = false;
+
+    if (temporizadorCarga) clearTimeout(temporizadorCarga);
+
+    temporizadorCarga = setTimeout(function() {
+      if (!terminado && productos.length === 0) mostrarCargaLenta();
+    }, 10000);
+
     script.src = API_PUBLICA +
       "?api=productos&callback=recibirProductosGaby&_=" + Date.now();
 
     script.onload = function() {
+      terminado = true;
+      clearTimeout(temporizadorCarga);
       script.remove();
     };
 
     script.onerror = function() {
+      terminado = true;
+      clearTimeout(temporizadorCarga);
       script.remove();
 
-      // Si ya había productos cargados, conservarlos ante un fallo temporal.
       if (productos.length === 0) {
-        errorCargaProductos();
+        if (!navigator.onLine) {
+          document.getElementById("productos").innerHTML =
+            '<div class="mensaje">No hay conexión a Internet.<br>Verifica tu conexión y vuelve a intentarlo.<br><br>' +
+            '<button type="button" onclick="reintentarCargaProductos()" style="border:1px solid #d8c5a8;background:#fffaf3;color:#8b651f;border-radius:12px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;">Reintentar</button></div>';
+        } else {
+          errorCargaProductos();
+        }
       }
     };
 
