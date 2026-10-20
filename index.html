@@ -3466,23 +3466,23 @@
 <div id="visorFoto" class="visor-foto" aria-hidden="true"><button id="visorCerrar" class="visor-cerrar" type="button" aria-label="Cerrar">×</button><img id="visorImagen" src="" alt="Foto ampliada de la joya"></div>
 
 <script>
-(function(){const v=document.getElementById('visorFoto'),im=document.getElementById('visorImagen'),c=document.getElementById('visorCerrar');let s=1,x=0,y=0,d0=0,s0=1,ix=0,iy=0,ax=0,ay=0;function tr(){im.style.transform='translate('+x+'px,'+y+'px) scale('+s+')'}function reset(){s=1;x=0;y=0;tr()}function open(src){if(!src)return;im.src=src;reset();v.classList.add('activo');document.body.style.overflow='hidden'}function close(){v.classList.remove('activo');im.src='';document.body.style.overflow='';reset()}function dist(ts){return Math.hypot(ts[0].clientX-ts[1].clientX,ts[0].clientY-ts[1].clientY)}document.addEventListener('click',e=>{
-  const principal=e.target.closest('#imagenPrincipal');
-  if(principal){
-    open(principal.currentSrc||principal.src);
-    return;
-  }
-  const mini=e.target.closest('.miniatura');
-  if(mini){
-    const minis=Array.from(document.querySelectorAll('.miniatura'));
-    const indice=minis.indexOf(mini);
-    if(indice>=0 && fotosDetalle[indice]){
-      open(crearUrlFoto(fotosDetalle[indice],1600));
-    } else {
-      open(mini.currentSrc||mini.src);
-    }
-  }
-});c.addEventListener('click',e=>{e.stopPropagation();close()});v.addEventListener('click',e=>{if(e.target===v)close()});v.addEventListener('touchstart',e=>{if(e.touches.length===2){d0=dist(e.touches);s0=s}else if(e.touches.length===1&&s>1){ix=e.touches[0].clientX;iy=e.touches[0].clientY;ax=x;ay=y}},{passive:false});v.addEventListener('touchmove',e=>{if(e.touches.length===2){e.preventDefault();s=Math.min(4,Math.max(1,s0*dist(e.touches)/d0));if(s===1){x=0;y=0}tr()}else if(e.touches.length===1&&s>1){e.preventDefault();x=ax+e.touches[0].clientX-ix;y=ay+e.touches[0].clientY-iy;tr()}},{passive:false});v.addEventListener('touchend',e=>{if(e.touches.length<2)d0=0});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&v.classList.contains('activo'))close()})})();
+(function(){
+  const v=document.getElementById('visorFoto'), im=document.getElementById('visorImagen'), c=document.getElementById('visorCerrar');
+  let s=1,x=0,y=0,s0=1,d0=0,cx0=0,cy0=0,x0=0,y0=0,px0=0,py0=0,panX0=0,panY0=0;
+  function tr(anim=false){im.style.transition=anim?'transform .18s ease-out':'none';im.style.transform='translate3d('+x+'px,'+y+'px,0) scale('+s+')'}
+  function reset(anim=false){s=1;x=0;y=0;tr(anim)}
+  function open(src){if(!src)return;im.src=src;reset();v.classList.add('activo');document.body.style.overflow='hidden'}
+  function close(){v.classList.remove('activo');im.src='';document.body.style.overflow='';reset()}
+  function dist(ts){return Math.hypot(ts[0].clientX-ts[1].clientX,ts[0].clientY-ts[1].clientY)}
+  function mid(ts){return{x:(ts[0].clientX+ts[1].clientX)/2,y:(ts[0].clientY+ts[1].clientY)/2}}
+  function clamp(){if(s<=1){s=1;x=0;y=0;return}const r=im.getBoundingClientRect(),bw=r.width/s,bh=r.height/s;const mx=Math.max(0,(bw*s-v.clientWidth)/2),my=Math.max(0,(bh*s-v.clientHeight)/2);x=Math.max(-mx,Math.min(mx,x));y=Math.max(-my,Math.min(my,y))}
+  document.addEventListener('click',e=>{const o=e.target;if(o&&(o.id==='imagenPrincipal'||o.classList.contains('miniatura'))){e.preventDefault();e.stopPropagation();open(o.src)}});
+  c.addEventListener('click',e=>{e.stopPropagation();close()});v.addEventListener('click',e=>{if(e.target===v)close()});
+  v.addEventListener('touchstart',e=>{im.style.transition='none';if(e.touches.length===2){e.preventDefault();d0=dist(e.touches);s0=s;const m=mid(e.touches),r=v.getBoundingClientRect();cx0=m.x-(r.left+r.width/2);cy0=m.y-(r.top+r.height/2);x0=x;y0=y}else if(e.touches.length===1&&s>1){px0=e.touches[0].clientX;py0=e.touches[0].clientY;panX0=x;panY0=y}},{passive:false});
+  v.addEventListener('touchmove',e=>{if(e.touches.length===2&&d0>0){e.preventDefault();const ns=Math.min(4,Math.max(1,s0*dist(e.touches)/d0));const m=mid(e.touches),r=v.getBoundingClientRect(),cx=m.x-(r.left+r.width/2),cy=m.y-(r.top+r.height/2),q=ns/s0;x=cx-(cx0-x0)*q;y=cy-(cy0-y0)*q;s=ns;clamp();tr()}else if(e.touches.length===1&&s>1){e.preventDefault();x=panX0+e.touches[0].clientX-px0;y=panY0+e.touches[0].clientY-py0;clamp();tr()}},{passive:false});
+  v.addEventListener('touchend',e=>{if(e.touches.length<2)d0=0;if(s<=1.02)reset(true);else{clamp();tr(true)}if(e.touches.length===1&&s>1){px0=e.touches[0].clientX;py0=e.touches[0].clientY;panX0=x;panY0=y}},{passive:false});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&v.classList.contains('activo'))close()});
+})();
 </script>
 </body>
 </html>
