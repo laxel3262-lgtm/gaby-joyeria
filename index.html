@@ -1188,30 +1188,29 @@
       background:#d62f50; letter-spacing:.4px;
     }
 
-    /* Categoría discreta dentro de cada tarjeta */
+    /* Categoría discreta sobre la foto, esquina inferior derecha */
     .categoria-tarjeta {
+      position:absolute;
+      right:8px;
+      bottom:8px;
+      z-index:3;
       display:inline-flex;
       align-items:center;
       width:max-content;
-      max-width:100%;
-      padding:3px 7px;
-      border:1px solid #eadfce;
+      max-width:calc(100% - 16px);
+      padding:4px 7px;
+      border:1px solid rgba(234,223,206,.95);
       border-radius:7px;
-      background:#faf5ed;
-      color:#8a6a3b;
+      background:rgba(250,245,237,.92);
+      color:#7d5c2d;
       font-size:8px;
       font-weight:700;
       letter-spacing:.6px;
       text-transform:uppercase;
       white-space:nowrap;
-    }
-
-    .lado-derecho-producto {
-      display:flex;
-      flex-direction:column;
-      align-items:flex-end;
-      gap:4px;
-      flex-shrink:0;
+      box-shadow:0 2px 6px rgba(0,0,0,.08);
+      backdrop-filter:blur(2px);
+      -webkit-backdrop-filter:blur(2px);
     }
 
     @media (max-width:520px) {
@@ -2187,6 +2186,13 @@
           foto.appendChild(etiquetaOferta);
         }
 
+        if (String(producto.categoria || "").trim()) {
+          const categoriaTarjeta = document.createElement("div");
+          categoriaTarjeta.className = "categoria-tarjeta";
+          categoriaTarjeta.textContent = formatearCategoria(producto.categoria);
+          foto.appendChild(categoriaTarjeta);
+        }
+
 
         /* INFORMACIÓN */
 
@@ -2289,20 +2295,6 @@
           producto.id || "";
 
 
-        const categoriaTarjeta =
-          document.createElement(
-            "div"
-          );
-
-        categoriaTarjeta.className =
-          "categoria-tarjeta";
-
-        categoriaTarjeta.textContent =
-          formatearCategoria(
-            producto.categoria
-          );
-
-
         const estado =
           document.createElement(
             "div"
@@ -2335,26 +2327,8 @@
         );
 
 
-        const ladoDerecho =
-          document.createElement(
-            "div"
-          );
-
-        ladoDerecho.className =
-          "lado-derecho-producto";
-
-        if (String(producto.categoria || "").trim()) {
-          ladoDerecho.appendChild(
-            categoriaTarjeta
-          );
-        }
-
-        ladoDerecho.appendChild(
-          estado
-        );
-
         pie.appendChild(
-          ladoDerecho
+          estado
         );
 
 
