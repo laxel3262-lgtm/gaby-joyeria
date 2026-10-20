@@ -1186,6 +1186,32 @@
       background:#d62f50; letter-spacing:.4px;
     }
 
+    /* Categoría discreta dentro de cada tarjeta */
+    .categoria-tarjeta {
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      max-width:100%;
+      padding:3px 7px;
+      border:1px solid #eadfce;
+      border-radius:7px;
+      background:#faf5ed;
+      color:#8a6a3b;
+      font-size:8px;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .lado-derecho-producto {
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:4px;
+      flex-shrink:0;
+    }
+
     @media (max-width:520px) {
       .cabecera { padding:16px 14px 17px; }
       .diamante { width:46px; height:34px; }
@@ -2190,6 +2216,20 @@
           producto.id || "";
 
 
+        const categoriaTarjeta =
+          document.createElement(
+            "div"
+          );
+
+        categoriaTarjeta.className =
+          "categoria-tarjeta";
+
+        categoriaTarjeta.textContent =
+          formatearCategoria(
+            producto.categoria
+          );
+
+
         const estado =
           document.createElement(
             "div"
@@ -2222,8 +2262,26 @@
         );
 
 
-        pie.appendChild(
+        const ladoDerecho =
+          document.createElement(
+            "div"
+          );
+
+        ladoDerecho.className =
+          "lado-derecho-producto";
+
+        if (String(producto.categoria || "").trim()) {
+          ladoDerecho.appendChild(
+            categoriaTarjeta
+          );
+        }
+
+        ladoDerecho.appendChild(
           estado
+        );
+
+        pie.appendChild(
+          ladoDerecho
         );
 
 
