@@ -2374,17 +2374,31 @@
           "click",
           function() {
 
-            abrirDetalle(
-              producto.id
+            // Guardar la posición exacta antes de abrir la joya.
+            const posicionCatalogo = window.scrollY;
+
+            history.replaceState(
+              {
+                ...(history.state || {}),
+                vista: "catalogo",
+                scrollY: posicionCatalogo
+              },
+              "",
+              window.location.pathname
             );
 
             history.pushState(
               {
                 vista: "detalle",
-                producto: String(producto.id)
+                producto: String(producto.id),
+                scrollY: posicionCatalogo
               },
               "",
               "?producto=" + encodeURIComponent(producto.id)
+            );
+
+            abrirDetalle(
+              producto.id
             );
 
           }
@@ -2658,7 +2672,7 @@
   }
 
 
-  function mostrarCatalogo() {
+  function mostrarCatalogo(posicionGuardada) {
 
     productoDetalle = null;
 
@@ -2672,10 +2686,14 @@
     ).style.display =
       "block";
 
-    window.scrollTo(
-      0,
-      0
-    );
+    // Recuperar la posición donde estaba la clienta antes de abrir la joya.
+    const posicion = Number.isFinite(Number(posicionGuardada))
+      ? Math.max(0, Number(posicionGuardada))
+      : 0;
+
+    requestAnimationFrame(function() {
+      window.scrollTo(0, posicion);
+    });
 
   }
 
@@ -2714,7 +2732,11 @@
         return;
       }
 
-      mostrarCatalogo();
+      mostrarCatalogo(
+        evento.state && evento.state.vista === "catalogo"
+          ? evento.state.scrollY
+          : 0
+      );
 
     }
   );
