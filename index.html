@@ -1234,6 +1234,79 @@
     .mensaje { display:block; width:100%; column-span:all; }
     .producto .nombre { min-height:0; }
     @media (min-width:700px) { .productos { column-count:3; column-gap:12px; } .producto { margin-bottom:12px; } }
+
+
+    /* =====================================
+       CAMPAÑA VISUAL EL BUEN FIN 2026
+       Solo presentación: no modifica precios ni funciones
+    ====================================== */
+    .buen-fin-banner {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      max-width: 980px;
+      margin: 0 auto 18px;
+      padding: 17px 20px 16px;
+      border: 1px solid rgba(213,177,112,.55);
+      border-radius: 15px;
+      text-align: center;
+      color: #fff8ec;
+      background:
+        radial-gradient(circle at 12% 20%, rgba(220,178,103,.22), transparent 27%),
+        radial-gradient(circle at 88% 80%, rgba(220,178,103,.16), transparent 28%),
+        linear-gradient(115deg, #24191b 0%, #4a2028 52%, #28191c 100%);
+      box-shadow: 0 5px 18px rgba(65,31,35,.13);
+    }
+    .buen-fin-banner::before,
+    .buen-fin-banner::after {
+      content: "✦";
+      position: absolute;
+      z-index: -1;
+      color: rgba(235,198,132,.42);
+      font-size: 35px;
+      line-height: 1;
+    }
+    .buen-fin-banner::before { top: 10px; left: 17px; }
+    .buen-fin-banner::after { bottom: 8px; right: 18px; font-size: 25px; }
+    .buen-fin-etiqueta {
+      display: inline-block;
+      margin-bottom: 5px;
+      color: #e7c78e;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2.8px;
+      text-transform: uppercase;
+    }
+    .buen-fin-titulo {
+      margin: 0;
+      color: #fff8ec;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(23px, 4vw, 31px);
+      line-height: 1.12;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+    .buen-fin-titulo span { color: #e7c78e; }
+    .buen-fin-mensaje {
+      margin: 7px 0 0;
+      color: #f1e3d3;
+      font-size: 12px;
+      letter-spacing: .35px;
+    }
+    .buen-fin-linea {
+      width: 58px;
+      height: 1px;
+      margin: 11px auto 0;
+      background: linear-gradient(90deg, transparent, #d7b477, transparent);
+    }
+    @media (max-width:520px) {
+      .buen-fin-banner { margin: 0 0 15px; padding: 15px 13px 14px; border-radius: 12px; }
+      .buen-fin-banner::before { left: 9px; top: 8px; font-size: 26px; }
+      .buen-fin-banner::after { right: 10px; bottom: 6px; font-size: 20px; }
+      .buen-fin-etiqueta { font-size: 8px; letter-spacing: 2px; }
+      .buen-fin-mensaje { font-size: 11px; }
+    }
+
 </style>
 
 </head>
@@ -1311,6 +1384,14 @@
 
   </header>
 
+
+  <!-- Campaña visual temporal: El Buen Fin 2026 -->
+  <section class="buen-fin-banner" aria-label="Campaña El Buen Fin 2026">
+    <div class="buen-fin-etiqueta">Una temporada para brillar</div>
+    <h2 class="buen-fin-titulo">EL BUEN FIN <span>2026</span></h2>
+    <p class="buen-fin-mensaje">Descubre esa joya especial que estabas buscando.</p>
+    <div class="buen-fin-linea" aria-hidden="true"></div>
+  </section>
 
   <!-- ===================================
        CONTENIDO
@@ -1702,6 +1783,13 @@
   let inicioSwipeX = 0;
 
   let productoDetalle = null;
+
+  // Conserva la posición del catálogo al entrar y salir de un producto.
+  let posicionCatalogo = 0;
+
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
 
 
   /* =====================================
@@ -2374,8 +2462,8 @@
           "click",
           function() {
 
-            // Guardar la posición exacta antes de abrir la joya.
-            const posicionCatalogo = window.scrollY;
+            // Guardar el punto exacto del catálogo antes de abrir el producto.
+            posicionCatalogo = window.scrollY || window.pageYOffset || 0;
 
             history.replaceState(
               {
@@ -2384,7 +2472,7 @@
                 scrollY: posicionCatalogo
               },
               "",
-              window.location.pathname
+              window.location.href
             );
 
             history.pushState(
@@ -2672,7 +2760,7 @@
   }
 
 
-  function mostrarCatalogo(posicionGuardada) {
+  function mostrarCatalogo(posicion) {
 
     productoDetalle = null;
 
@@ -2686,13 +2774,13 @@
     ).style.display =
       "block";
 
-    // Recuperar la posición donde estaba la clienta antes de abrir la joya.
-    const posicion = Number.isFinite(Number(posicionGuardada))
-      ? Math.max(0, Number(posicionGuardada))
-      : 0;
+    if (typeof posicion === "number" && Number.isFinite(posicion)) {
+      posicionCatalogo = Math.max(0, posicion);
+    }
 
+    // Esperar a que el catálogo vuelva a mostrarse antes de restaurar el scroll.
     requestAnimationFrame(function() {
-      window.scrollTo(0, posicion);
+      window.scrollTo(0, posicionCatalogo);
     });
 
   }
@@ -2700,8 +2788,7 @@
 
   function cerrarDetalle() {
 
-    // Si el detalle creó una entrada en el historial,
-    // usar el retroceso real del navegador.
+    // Si el detalle creó una entrada en el historial, usar el retroceso real.
     if (
       history.state &&
       history.state.vista === "detalle"
@@ -2710,13 +2797,12 @@
       return;
     }
 
-    mostrarCatalogo();
+    mostrarCatalogo(posicionCatalogo);
 
   }
 
 
-  // Botón/gesto Atrás de Chrome:
-  // detalle -> catálogo, sin cerrar la página.
+  // Botón/gesto Atrás de Chrome: detalle -> catálogo, conservando la posición.
   window.addEventListener(
     "popstate",
     function(evento) {
@@ -2732,11 +2818,12 @@
         return;
       }
 
-      mostrarCatalogo(
-        evento.state && evento.state.vista === "catalogo"
+      const posicionGuardada =
+        evento.state && typeof evento.state.scrollY === "number"
           ? evento.state.scrollY
-          : 0
-      );
+          : posicionCatalogo;
+
+      mostrarCatalogo(posicionGuardada);
 
     }
   );
